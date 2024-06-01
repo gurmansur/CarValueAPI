@@ -29,7 +29,7 @@ module.exports = class InitialSchema1717262035321
           {
             name: 'isAdmin',
             type: 'boolean',
-            default: 'true',
+            default: 'false',
           },
         ],
       }),
