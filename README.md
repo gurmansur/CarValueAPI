@@ -24,7 +24,11 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) API for car valuation reports. This API is used to generate car valuation reports based on the car's make, model, year, and mileage. The API has authentication and authorization features to ensure that only authenticated users can generate reports and only admin users can approve or reject reports. The API also has a feature to generate a report for a specific car based on the car's make, model, year, and mileage. The API is built using the NestJS framework and uses a PostgreSQL database to store data.
+[Nest](https://github.com/nestjs/nest) API for car valuation reports.
+This API is used to generate car valuation reports based on the car's make, model, year, and mileage.
+It has authentication and authorization features to ensure that only authenticated users can generate reports and only admin users can approve or reject reports.
+It also has a feature to generate a report for a specific car based on the car's make, model, year, and mileage.
+The API is built using the NestJS framework and uses a PostgreSQL database to store data.
 
 ## Installation
 
