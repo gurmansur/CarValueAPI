@@ -9,13 +9,16 @@ import {
   Post,
   Query,
   Session,
+  UseGuards,
 } from '@nestjs/common';
-import { Serialize } from 'src/interceptors/serialize/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize/serialize.interceptor';
+import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
-import { AuthService } from './auth.service';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -26,11 +29,8 @@ export class UsersController {
   ) {}
 
   @Get('whoami')
-  async whoAmI(@Session() session: any) {
-    const user = await this.usersService.findOne(session.userId);
-    if (!user) {
-      return 'Nenhum usuário logado';
-    }
+  @UseGuards(AuthGuard)
+  async whoAmI(@CurrentUser() user: UserDto) {
     return user;
   }
 
@@ -55,8 +55,12 @@ export class UsersController {
   }
 
   @Get(':id')
-  findUser(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  async findUser(@Param('id') id: string) {
+    const user = await this.usersService.findOne(id);
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+    return user;
   }
 
   @Get()

@@ -10,9 +10,9 @@ export class UsersService {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  create(email: string, password: string): Promise<User> {
+  async create(email: string, password: string): Promise<User> {
     const user = this.usersRepository.create({ email, password });
-    return this.usersRepository.save(user);
+    return await this.usersRepository.save(user);
   }
 
   async findOne(id: string): Promise<User> {
@@ -30,7 +30,7 @@ export class UsersService {
   async remove(id: string): Promise<User> {
     const user = await this.findOne(id);
     if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('User not found');
     }
     return this.usersRepository.remove(user);
   }
@@ -38,7 +38,7 @@ export class UsersService {
   async update(id: string, user: Partial<UpdateUserDto>): Promise<User> {
     const updatedUser = await this.findOne(id);
     if (!updatedUser) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('User not found');
     }
     Object.assign(updatedUser, user);
     return this.usersRepository.save(updatedUser);

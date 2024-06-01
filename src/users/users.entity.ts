@@ -1,11 +1,12 @@
+import { Report } from '../reports/reports.entity';
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
   AfterInsert,
   AfterUpdate,
   BeforeRemove,
-  AfterLoad,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
@@ -18,6 +19,12 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({ default: false })
+  isAdmin: boolean;
+
+  @OneToMany(() => Report, (report) => report.user)
+  reports: Report[];
 
   @AfterInsert()
   afterInsert() {
@@ -32,10 +39,5 @@ export class User {
   @AfterUpdate()
   afterUpdate() {
     console.log(`Updated User with id ${this.id}`);
-  }
-
-  @AfterLoad()
-  afterLoad() {
-    console.log(`Loaded User with id ${this.id}`);
   }
 }

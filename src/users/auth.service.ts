@@ -16,8 +16,8 @@ export class AuthService {
   async signUp(email: string, password: string) {
     // Check if email is in use
     const users = await this.usersService.find(email);
-    if (users.length) {
-      throw new BadRequestException('Email já cadastrado');
+    if (users.length > 0) {
+      throw new BadRequestException('Email already in use');
     }
 
     // Hash the user's password
@@ -43,7 +43,7 @@ export class AuthService {
 
     // If the user is not found
     if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+      throw new NotFoundException('User not found');
     }
 
     // Split the salt and the hashed password
@@ -56,7 +56,7 @@ export class AuthService {
     if (storedHash === hash.toString('hex')) {
       return user;
     } else {
-      throw new BadRequestException('Senha incorreta');
+      throw new BadRequestException('Bad password');
     }
   }
 }
